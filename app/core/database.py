@@ -17,9 +17,9 @@ DatabaseSessionLocal = sessionmaker(
 BaseModel = declarative_base()
 
 
-def get_database_session():
+def get_db():
     current_session = DatabaseSessionLocal()
     try:
         yield current_session
     finally:
-        current_session.close()  
+        current_session.close() 

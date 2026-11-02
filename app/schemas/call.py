@@ -3,6 +3,10 @@ from typing import Optional
 from pydantic import BaseModel, Field, ConfigDict
 from app.models.call import CallStatusEnum, DisconnectReasonEnum
 
+class CallCompleteRequest(BaseModel):
+    call_session_id: str
+    call_duration_seconds: Optional[int] = None
+
 class InboundCallRequest(BaseModel):
     call_session_id: str = Field(..., min_length=5, max_length=100, examples=["CALL-UUID-98213"])
     customer_phone_number: str = Field(..., min_length=10, max_length=20, examples=["+919876543210"])

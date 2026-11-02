@@ -1,4 +1,6 @@
-from app.schemas import InboundCallRequest, AgentCreate, ReconnectTelemetryMetrics
+from app.schemas.call import InboundCallRequest
+from app.schemas.agent import AgentCreate
+from app.schemas.drop_log import ReconnectTelemetryMetrics
 
 from app.schemas.agent import (
     AgentBase,

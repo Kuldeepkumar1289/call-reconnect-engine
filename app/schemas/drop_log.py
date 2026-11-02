@@ -10,11 +10,11 @@ class CallDropLogBase(BaseModel):
     status: ReconnectStatusEnum = ReconnectStatusEnum.PENDING
 
 class ReconnectTelemetryMetrics(BaseModel):
-    total_dropped_calls: int = Field(..., description="Total kitni calls drop hui")
-    total_reconnected_calls: int = Field(..., description="180s ke andar successfully reconnect hui calls")
-    total_expired_windows: int = Field(..., description="Jinki 180s window expire ho gayi")
+    total_dropped_calls: int = Field(..., description="How many calls were dropped in total?")
+    total_reconnected_calls: int = Field(..., description="within 180s successfully reconnect calls")
+    total_expired_windows: int = Field(..., description="Those whose Windows 180shas expired")
     recovery_rate_percentage: float = Field(..., description="Overall recovery percentage (SLA)")
-    average_reconnect_seconds: Optional[float] = Field(None, description="Average kitne seconds me customer reconnect hua")
+    average_reconnect_seconds: Optional[float] = Field(None, description="On average, in how many seconds did the customer reconnect?")
 
 class CallDropLogResponse(CallDropLogBase):
     id: int

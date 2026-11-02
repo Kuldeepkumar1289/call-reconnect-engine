@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Center ACD & Reconnect Engine Dashboard</title>
+  
+  <!-- Tailwind CSS Framework CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="/frontend/css/style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+
+  <!-- Top Contact Center Navigation Bar -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-3.5 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="h-3 w-3 rounded-full bg-emerald-500 animate-pulse"></div>
+      <div>
+        <h1 class="text-sm font-bold tracking-tight text-white flex items-center">
+          ACD Teleconnect Core Engine
+          <span class="ml-2 text-[10px] font-telecom-mono bg-indigo-950 text-indigo-300 border border-indigo-700/60 px-2 py-0.5 rounded">
+            v1.2 Production
+          </span>
+        </h1>
+        <p class="text-[11px] text-slate-400">Intelligent Sticky-Agent Drop & Reconnect Orchestrator</p>
+      </div>
+    </div>
+
+    <div class="flex items-center space-x-4 text-xs font-telecom-mono">
+      <div class="bg-slate-950 border border-slate-800 px-3 py-1.5 rounded-lg flex items-center space-x-2">
+        <span class="text-slate-400">STICKY WINDOW:</span>
+        <span class="text-amber-400 font-bold">180 SEC</span>
+      </div>
+      <div class="bg-slate-950 border border-slate-800 px-3 py-1.5 rounded-lg flex items-center space-x-2">
+        <span class="text-slate-400">ENGINE:</span>
+        <span class="text-emerald-400 font-bold">ONLINE</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-6 space-y-6">
+
+    <!-- KPI Summary Section -->
+    <section class="grid grid-cols-2 md:grid-cols-5 gap-3.5">
+      <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
+        <p class="text-[11px] font-semibold text-slate-400 tracking-wider uppercase font-telecom-mono">Total Volume</p>
+        <p id="metric-total-calls" class="text-2xl font-bold font-telecom-mono mt-1 text-slate-100">0</p>
+      </div>
+      <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
+        <p class="text-[11px] font-semibold text-slate-400 tracking-wider uppercase font-telecom-mono">Network Drops</p>
+        <p id="metric-dropped-calls" class="text-2xl font-bold font-telecom-mono mt-1 text-rose-400">0</p>
+      </div>
+      <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
+        <p class="text-[11px] font-semibold text-slate-400 tracking-wider uppercase font-telecom-mono">Sticky Recoveries</p>
+        <p id="metric-sticky-reconnects" class="text-2xl font-bold font-telecom-mono mt-1 text-amber-400">0</p>
+      </div>
+      <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
+        <p class="text-[11px] font-semibold text-slate-400 tracking-wider uppercase font-telecom-mono">Drop Ratio</p>
+        <p id="metric-drop-rate" class="text-2xl font-bold font-telecom-mono mt-1 text-indigo-400">0%</p>
+      </div>
+      <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
+        <p class="text-[11px] font-semibold text-slate-400 tracking-wider uppercase font-telecom-mono">Avg Reconnect</p>
+        <p id="metric-avg-time" class="text-2xl font-bold font-telecom-mono mt-1 text-emerald-400">0s</p>
+      </div>
+    </section>
+
+    <!-- Operational Hub -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- Left: Contact Center Call Simulator -->
+      <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-4">
+        <div class="border-b border-slate-800 pb-3">
+          <h2 class="text-sm font-bold text-slate-200 uppercase tracking-wider font-telecom-mono">Line Simulator</h2>
+          <p class="text-xs text-slate-400">Emulate inbound caller SIP triggers and disconnections</p>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Customer MSISDN (Phone)</label>
+            <input type="text" id="sim-phone-input" value="+919888877777" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs font-telecom-mono focus:outline-none focus:border-indigo-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Session Call Identifier</label>
+            <input type="text" id="sim-session-display" placeholder="Ready to originate..." readonly class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3 py-2 text-xs font-telecom-mono text-slate-400">
+          </div>
+        </div>
+
+        <!-- Simulator Action Buttons -->
+        <div class="pt-2 space-y-2">
+          <button onclick="simulateInboundCall()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-2">
+            <span>📞</span>
+            <span>Originate Inbound Call</span>
+          </button>
+          
+          <button onclick="simulateNetworkFailureDrop()" class="w-full bg-rose-600/90 hover:bg-rose-500 text-white font-medium py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-2">
+            <span>⚠️</span>
+            <span>Simulate Network Disconnect</span>
+          </button>
+
+          <button onclick="simulateNormalHangup()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-2">
+            <span>⏹️</span>
+            <span>Normal Call Hangup</span>
+          </button>
+        </div>
+
+        <!-- Active Routing Status Card -->
+        <div class="mt-4 p-3.5 bg-slate-950 border border-slate-800/80 rounded-xl space-y-2">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-400">Assigned Agent:</span>
+            <span id="active-agent-badge" class="font-telecom-mono font-bold text-white">-</span>
+          </div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-400">Routing Mode:</span>
+            <span id="sticky-flag-indicator" class="font-telecom-mono text-slate-400">IDLE</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Real-time Agent Matrix -->
+      <section class="lg:col-span-2 bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h2 class="text-sm font-bold text-slate-200 uppercase tracking-wider font-telecom-mono">Agent Pool Floor</h2>
+            <p class="text-xs text-slate-400">Live ACD status across active contact center lines</p>
+          </div>
+          <div class="flex items-center space-x-3 text-[11px] font-telecom-mono text-slate-400">
+            <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>AVAILABLE</span>
+            <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-amber-500 mr-1.5"></span>ON_HOLD (Sticky)</span>
+            <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-rose-500 mr-1.5"></span>BUSY</span>
+          </div>
+        </div>
+
+        <div id="agent-matrix-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+          <div class="text-xs text-slate-500 col-span-full py-8 text-center font-telecom-mono">Syncing contact floor...</div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Live Event Stream Console -->
+    <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+        <div class="flex items-center space-x-2">
+          <div class="w-2 h-2 bg-indigo-500 rounded-full animate-ping"></div>
+          <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider font-telecom-mono">ACD Activity Audit Stream</h2>
+        </div>
+        <button onclick="clearConsoleLogs()" class="text-xs text-slate-500 hover:text-slate-300 font-telecom-mono transition">Flush Logs</button>
+      </div>
+
+      <div id="telecom-logs" class="bg-slate-950 border border-slate-800 rounded-xl p-3 font-telecom-mono text-xs h-40 overflow-y-auto space-y-1">
+        <div class="text-slate-500 py-1">[Ready] Monitoring ACD telemetry and sticky-reconnection lifecycle...</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- External Scripts Loaded Modally -->
+  <script src="/static/js/dashboard.js"></script>
+  <script src="/static/js/simulator.js"></script>
+</body>
+</html>

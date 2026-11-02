@@ -6,7 +6,8 @@ from app.core.database import BaseModel
 
 class CallStatusEnum(str, enum.Enum):
     INITIATED = "INITIATED"      
-    RINGING = "RINGING"          
+    RINGING = "RINGING" 
+    QUEUED = "QUEUED"         
     IN_PROGRESS = "IN_PROGRESS"  
     COMPLETED = "COMPLETED"      
     DROPPED = "DROPPED"

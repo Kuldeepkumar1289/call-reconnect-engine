@@ -6,7 +6,9 @@ from app.core.database import BaseModel
 
 class AgentStatusEnum(str, enum.Enum):
     AVAILABLE = "AVAILABLE"
-    ON_CALL = "ON_CALL"
+    ON_CALL = "BUSY"
+    BUSY = "BUSY"
+    ON_HOLD = "ON_HOLD"
     WRAP_UP = "WRAP_UP"
     OFFLINE = "OFFLINE"
 
@@ -14,9 +16,9 @@ class Agent(BaseModel):
     __tablename__ = "agents"
     id = Column(Integer, primary_key=True, index=True, nullable=False)
 
-    agent_code = Column(String(50), unique=True,index=True, nullable=False)
+    agent_code = Column(String(50), unique=True, index=True, nullable=False)
     full_name = Column(String(100), nullable=False)
-    email = Column(String(100), unique=True,index=True, nullable=False)
+    email = Column(String(100), unique=True, index=True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
 
     status = Column(Enum(AgentStatusEnum), default=AgentStatusEnum.AVAILABLE, nullable=False, index=True)

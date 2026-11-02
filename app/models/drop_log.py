@@ -27,7 +27,6 @@ class CallDropLog(BaseModel):
     )
 
     reconnect_window_expires_at = Column(DateTime(timezone=True), nullable=False)
-
     status = Column(
         Enum(ReconnectStatusEnum),
         default=ReconnectStatusEnum.PENDING,
